@@ -121,22 +121,30 @@
   }
 
   /* Marco legal y consecuencias */
-  .terms { margin: 0; display: grid; grid-template-columns: 9.5em 1fr; }
-  .terms dt, .terms dd { padding-block: 1em; border-top: 1px solid var(--rule); }
-  .terms dt {
-    font-size: .74em; font-weight: 700; letter-spacing: .16em; text-transform: uppercase;
-    color: var(--ink-2); padding-top: 1.45em; padding-right: 1em;
+  .legal-title {
+    margin: 0 0 .5em;
+    font-family: var(--display); font-weight: 800; text-transform: uppercase;
+    font-size: 2.3em; line-height: 1; letter-spacing: .01em; color: var(--ink);
   }
-  .terms dd { margin: 0; min-width: 0; }
   .laws { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: 1fr 1fr; gap: 1.2em; }
-  .law { display: flex; flex-direction: column; gap: .15em; }
+  .law {
+    display: flex; flex-direction: column; gap: .35em; min-width: 0;
+    background: var(--tint); border-top: 4px solid var(--ink);
+    padding: 1.1em 1.3em 1.2em;
+  }
   .law .num {
-    font-family: var(--mono); font-weight: 600; font-size: 1.05em; color: var(--ink);
+    font-family: var(--mono); font-weight: 600; font-size: 1.95em; line-height: 1.1; color: var(--ink);
     font-variant-numeric: tabular-nums;
   }
-  .law .name { font-weight: 700; font-size: .95em; line-height: 1.3; }
-  .law .scope { font-size: .88em; color: var(--ink-2); }
-  .consequence { margin: 0; font-size: 1em; line-height: 1.5; color: var(--ink); max-width: 36em; }
+  .law .name { font-weight: 700; font-size: 1.25em; line-height: 1.25; color: var(--ink); }
+  .law .scope {
+    margin-top: .25em; font-size: 1.02em; font-weight: 600; color: var(--signal);
+  }
+  .breach { border-top: 1px solid var(--rule); padding-top: 1em; }
+  .breach .k {
+    margin: 0 0 .35em; font-size: .78em; font-weight: 700; letter-spacing: .18em; text-transform: uppercase; color: var(--signal);
+  }
+  .consequence { margin: 0; font-size: 1.08em; line-height: 1.5; color: var(--ink); max-width: 40em; }
   .consequence strong { font-weight: 700; }
 
   /* Pie y firma */
@@ -175,10 +183,9 @@
     .verbs { grid-template-columns: 1fr 1fr; }
     .verbs li:nth-child(odd) { border-left: 0; padding-left: 0; }
     .verbs li:nth-child(n+3) { border-top: 1px solid var(--rule); }
-    .terms { grid-template-columns: 1fr; }
-    .terms dt { padding-bottom: 0; }
-    .terms dd { border-top: 0; padding-top: .5em; }
+    .legal-title { font-size: 1.8em; }
     .laws { grid-template-columns: 1fr; }
+    .law .num { font-size: 1.6em; }
   }
 
   @media print {
@@ -275,27 +282,26 @@
           </ul>
         </section>
 
-        <dl class="terms">
-          <dt>Marco legal de respaldo</dt>
-          <dd>
-            <ul class="laws">
-              <li class="law">
-                <span class="num">Ley N° 26.206</span>
-                <span class="name">Ley de Educación Nacional</span>
-                <span class="scope">Cuidado del patrimonio institucional</span>
-              </li>
-              <li class="law">
-                <span class="num">Ley N° 9.870</span>
-                <span class="name">Ley Provincial de Educación de Córdoba</span>
-                <span class="scope">Convivencia escolar</span>
-              </li>
-            </ul>
-          </dd>
-          <dt>Incumplimiento</dt>
-          <dd>
-            <p class="consequence">El incumplimiento de estas normas dará lugar a las <strong>acciones formativas y disciplinarias</strong> correspondientes según el <strong>Acuerdo Escolar de Convivencia</strong>.</p>
-          </dd>
-        </dl>
+        <section class="legal">
+          <h2 class="legal-title">Marco legal de respaldo</h2>
+          <ul class="laws">
+            <li class="law">
+              <span class="num">Ley N° 26.206</span>
+              <span class="name">Ley de Educación Nacional</span>
+              <span class="scope">Cuidado del patrimonio institucional</span>
+            </li>
+            <li class="law">
+              <span class="num">Ley N° 9.870</span>
+              <span class="name">Ley Provincial de Educación de Córdoba</span>
+              <span class="scope">Convivencia escolar</span>
+            </li>
+          </ul>
+        </section>
+
+        <section class="breach">
+          <p class="k">Incumplimiento</p>
+          <p class="consequence">El incumplimiento de estas normas dará lugar a las <strong>acciones formativas y disciplinarias</strong> correspondientes según el <strong>Acuerdo Escolar de Convivencia</strong>.</p>
+        </section>
 
         <footer class="foot">
           <div class="community">
