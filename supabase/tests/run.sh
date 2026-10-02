@@ -8,3 +8,4 @@ ${PSQL} -d postgres -c "drop database if exists ${DB}" -c "create database ${DB}
 ${PSQL} -d ${DB} -f supabase/tests/shim_supabase.sql
 for f in supabase/migrations/*.sql; do ${PSQL} -d ${DB} -f "$f"; done
 ${PSQL} -d ${DB} -f supabase/tests/aislamiento.test.sql
+${PSQL} -d ${DB} -f supabase/tests/reporte.test.sql

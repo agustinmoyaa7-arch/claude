@@ -14,7 +14,7 @@ Next.js (App Router) + Supabase (Postgres + Auth + RLS).
 
 ## Arrancar en tu PC
 1. Creá un proyecto de Supabase **nuevo para desarrollo** (no uses el de Maga ni el de El Pirata).
-2. En el SQL Editor pegá y ejecutá `supabase/migrations/0001_core_multitenant.sql`.
+2. En el SQL Editor ejecutá, en orden, los archivos de `supabase/migrations/` (`0001` y `0002`).
 3. `cp .env.example .env.local` y completá las 3 variables (Project Settings → API).
 4. `npm install` y `npm run dev` → http://localhost:3000
 5. Registrate en `/login`, creá tu empresa, cargá empleados y creá un código de activación.
@@ -27,12 +27,16 @@ Necesita Postgres local (imita Supabase con un shim):
 ```
 PGPASSWORD=postgres bash supabase/tests/run.sh
 ```
-26 chequeos: aislamiento entre empresas, límite del plan, permisos de `fichar()`, modo lectura, auditoría.
+38 chequeos: aislamiento entre empresas, límite del plan, permisos de `fichar()`, modo lectura, auditoría y el reporte plan vs. real (tarde, extra, ausente, turno nocturno, fichaje anulado).
+
+## Plan vs. real
+- `/app/horarios`: grilla semanal por empleado (entrada y salida por día; vacío = franco; salida menor que entrada = cruza medianoche).
+- `/app/reporte`: compara el cuadro con los fichajes por día. Estados: en horario, tarde, salió antes, horas extra, ausente, pendiente, sin salida, en curso, franco trabajado. Tolerancia de 10 min. Descarga CSV (separador `;`, abre bien en Excel).
+- Lógica en la función SQL `reporte_plan_vs_real` (corre con los permisos del usuario, así que RLS limita a sus empresas).
 
 ## Falta (en orden)
-1. Cuadro semanal por empleado (tabla `horarios` ya existe) + reporte plan vs. real.
-2. Edición de fichajes con auditoría desde el panel + export a Excel/CSV.
-3. Panel maestro de New Wave (lista de empresas, MRR).
-4. Mercado Pago: webhook que actualiza `suscripciones` y `empresas.estado`.
-5. Geolocalización con radio de sede (columnas ya creadas).
-6. Importar Maga y El Pirata como empresas 0 y 1.
+1. Editar o anular fichajes desde el panel (cargar una salida olvidada), con auditoría.
+2. Panel maestro de New Wave (lista de empresas, MRR).
+3. Mercado Pago: webhook que actualiza `suscripciones` y `empresas.estado`.
+4. Geolocalización con radio de sede (columnas ya creadas).
+5. Importar Maga y El Pirata como empresas 0 y 1.

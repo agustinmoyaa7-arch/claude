@@ -1,3 +1,4 @@
+import Link from "next/link";
 import { redirect } from "next/navigation";
 import { createClient } from "@/lib/supabase/server";
 import { fechaHora } from "@/lib/format";
@@ -32,7 +33,11 @@ export default async function Panel() {
             {empresa.estado === "prueba" && empresa.prueba_hasta && ` hasta ${fechaHora(empresa.prueba_hasta)}`}
           </p>
         </div>
-        <form action={cerrarSesion}><button className="text-sm underline">Salir</button></form>
+        <nav className="flex items-center gap-4 text-sm underline">
+          <Link href="/app/horarios">Cuadro semanal</Link>
+          <Link href="/app/reporte">Reporte</Link>
+          <form action={cerrarSesion}><button className="underline">Salir</button></form>
+        </nav>
       </header>
 
       <section className="space-y-3">
