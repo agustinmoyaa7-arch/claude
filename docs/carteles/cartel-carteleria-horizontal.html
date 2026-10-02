@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Aviso Institucional - Cuidado de la Cartelería</title>
+<title>Aviso Institucional - Cuidado de la Cartelería (horizontal)</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700;800&family=Public+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@500;600&display=swap">
@@ -195,6 +195,32 @@
     .poster { width: 210mm; height: 297mm; max-width: none; aspect-ratio: auto; box-shadow: none; }
     .no-print { display: none !important; }
   }
+
+  /* Versión horizontal: A4 apaisado, mensaje a la izquierda y marco legal a la derecha */
+  .poster { max-width: 1160px; aspect-ratio: 297 / 210; }
+  .sheet { font-size: clamp(12px, 1.38cqi, 16px); }
+  .body { padding: 1.7em 2.4em 1.3em; gap: 1.3em; }
+  .cols { flex: 1; display: grid; grid-template-columns: 1.15fr 1fr; gap: 2.6em; }
+  .col-a, .col-b { min-width: 0; display: flex; flex-direction: column; gap: 1.5em; }
+  .col-a { justify-content: center; gap: 2.2em; }
+  .col-b { border-left: 1px solid var(--rule); padding-left: 2.6em; justify-content: center; }
+  h1 { font-size: 3.5em; }
+  .ban-main { grid-template-columns: 10em 1fr; gap: 1.5em; }
+  .ban-word { font-size: 6.6em; }
+  .verbs span { font-size: 1.3em; }
+  .verbs li { padding: .7em .7em; }
+  .laws { grid-template-columns: 1fr; gap: 1em; }
+  .legal-title { font-size: 2.2em; margin-bottom: .1em; }
+  @media screen and (max-width: 900px) {
+    .poster { aspect-ratio: auto; }
+    .sheet { font-size: 14px; }
+    .cols { grid-template-columns: 1fr; }
+    .col-b { border-left: 0; padding-left: 0; }
+  }
+  @media print {
+    @page { size: A4 landscape; margin: 0; }
+    .poster { width: 297mm; height: 210mm; max-width: none; aspect-ratio: auto; }
+  }
 </style>
 
 <style>
@@ -228,6 +254,8 @@
 
       <div class="body">
 
+        <div class="cols">
+        <div class="col-a">
         <section>
           <p class="eyebrow">Cuidado del patrimonio escolar</p>
           <h1>¡Cuidemos nuestra escuela y nuestros canales de información!</h1>
@@ -282,6 +310,8 @@
           </ul>
         </section>
 
+        </div>
+        <div class="col-b">
         <section class="legal">
           <h2 class="legal-title">Marco legal de respaldo</h2>
           <ul class="laws">
@@ -302,6 +332,9 @@
           <p class="k">Incumplimiento</p>
           <p class="consequence">El incumplimiento de estas normas dará lugar a las <strong>acciones formativas y disciplinarias</strong> correspondientes según el <strong>Acuerdo Escolar de Convivencia</strong>.</p>
         </section>
+
+        </div>
+        </div>
 
         <footer class="foot">
           <div class="community">
