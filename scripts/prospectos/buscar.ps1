@@ -7,11 +7,17 @@
   .\buscar.ps1 -Zona cordoba -Max 10      # primera prueba barata
   .\buscar.ps1 -Zona sierras              # 40 lugares por rubro y ciudad
   .\buscar.ps1 -DesdeArchivo .\salida\crudo\*.json   # reprocesa sin gastar
+  .\buscar.ps1 -Ciudades "Río Cuarto, Córdoba, Argentina" -Rubros parrilla,hotel -Nombre rio-cuarto
+
+  Para usarlo con menú y token guardado: scrap.ps1 (o doble clic en scrap.cmd).
 
   Funciona en Windows PowerShell 5.1 y en PowerShell 7.
 #>
 param(
   [string]$Zona,
+  [string[]]$Ciudades,     # en vez de -Zona: ciudades sueltas ("Río Cuarto, Córdoba, Argentina")
+  [string[]]$Rubros,       # en vez de los rubros de config.json
+  [string]$Nombre,         # nombre del CSV cuando se usa -Ciudades
   [ValidateRange(1, 500)][int]$Max = 40,
   [string[]]$DesdeArchivo,
   [switch]$IncluirVistos,  # no filtra los lugares ya exportados en corridas anteriores
@@ -19,6 +25,7 @@ param(
 )
 
 $ErrorActionPreference = "Stop"
+$ProgressPreference = "SilentlyContinue"   # sin barra de descarga (en PowerShell 5.1 además la hace lenta)
 $aqui = $PSScriptRoot
 $cfg = Get-Content -Raw -Encoding UTF8 (Join-Path $aqui "config.json") | ConvertFrom-Json
 $salida = Join-Path $aqui "salida"
@@ -27,6 +34,14 @@ New-Item -ItemType Directory -Force -Path $crudo | Out-Null
 $fecha = Get-Date -Format "yyyy-MM-dd"
 $marca = Get-Date -Format "yyyy-MM-dd_HHmm"   # en los nombres de archivo: dos corridas el mismo día no se pisan
 $utf8Bom = New-Object System.Text.UTF8Encoding($true)
+$rubros = if ($Rubros) { @($Rubros | ForEach-Object { $_.Trim().ToLower() } | Where-Object { $_ }) } else { @($cfg.rubros) }
+
+# "Río Cuarto, Córdoba" -> "rio-cuarto-cordoba": nombres de archivo sin tildes ni espacios.
+function Slug([string]$Texto) {
+  $sinTildes = -join ($Texto.Normalize([Text.NormalizationForm]::FormD).ToCharArray() |
+      Where-Object { [Globalization.CharUnicodeInfo]::GetUnicodeCategory($_) -ne "NonSpacingMark" })
+  return ($sinTildes -replace "[^A-Za-z0-9]+", "-").Trim("-").ToLower()
+}
 
 # ---------------------------------------------------------------- Apify
 
@@ -52,7 +67,7 @@ function Invoke-Apify([string]$Metodo, [string]$Ruta, $Cuerpo) {
 function Buscar-Ciudad([string]$Ciudad) {
   # Sin reseñas, fotos ni detalle extra: cada uno de esos agregados se cobra aparte.
   $entrada = @{
-    searchStringsArray        = @($cfg.rubros)
+    searchStringsArray        = $rubros
     locationQuery             = $Ciudad
     maxCrawledPlacesPerSearch = $Max
     language                  = "es"
@@ -76,7 +91,7 @@ function Buscar-Ciudad([string]$Ciudad) {
   $buscada = $Ciudad.Split(",")[0].Trim()
   foreach ($it in $items) { $it | Add-Member -NotePropertyName _ciudad -NotePropertyValue $buscada -Force }
   # Se guarda lo bajado: si algo falla después, se reprocesa con -DesdeArchivo sin volver a pagar.
-  $nombre = ($Ciudad.Split(",")[0] -replace "[^\w]+", "-").ToLower()
+  $nombre = Slug $Ciudad.Split(",")[0]
   $archivo = Join-Path $crudo "$marca-$nombre.json"
   [System.IO.File]::WriteAllText($archivo, (ConvertTo-Json -InputObject @($items) -Depth 8), $utf8Bom)
   Write-Host "  $(@($items).Count) lugares -> $archivo"
@@ -177,12 +192,18 @@ if ($DesdeArchivo) {
 }
 else {
   if (-not $env:APIFY_TOKEN) { throw 'Falta el token. Corré primero: $env:APIFY_TOKEN = "apify_api_..." (console.apify.com > Settings > API & Integrations).' }
-  $zonas = @($cfg.zonas.PSObject.Properties.Name)
-  if (-not $Zona -or $Zona -notin $zonas) { throw "Elegí una zona con -Zona: $($zonas -join ', ')" }
-  $ciudades = @($cfg.zonas.$Zona)
-  $tope = $ciudades.Count * @($cfg.rubros).Count * $Max
+  if ($Ciudades) {
+    $ciudades = @($Ciudades)
+    $Zona = if ($Nombre) { $Nombre } else { "busqueda" }
+  }
+  else {
+    $zonas = @($cfg.zonas.PSObject.Properties.Name)
+    if (-not $Zona -or $Zona -notin $zonas) { throw "Elegí una zona con -Zona: $($zonas -join ', ')" }
+    $ciudades = @($cfg.zonas.$Zona)
+  }
+  $tope = $ciudades.Count * $rubros.Count * $Max
   $usd = [math]::Round($tope * $cfg.usd_por_mil_lugares / 1000, 2)
-  Write-Host "Zona $Zona : $($ciudades.Count) ciudades x $(@($cfg.rubros).Count) rubros x $Max lugares = hasta $tope lugares."
+  Write-Host "Zona $Zona : $($ciudades.Count) ciudades x $($rubros.Count) rubros x $Max lugares = hasta $tope lugares."
   Write-Host "Costo máximo estimado: USD $usd (suele ser menos: hay rubros con pocos resultados)." -ForegroundColor Yellow
   if (-not $Si) {
     $ok = Read-Host "¿Seguir? (s/n)"
@@ -221,6 +242,8 @@ foreach ($it in $items) {
 
   $rubro = if ($it.categoryName) { $it.categoryName } else { $it.searchString }
   $puntos = [math]::Max((Puntos-Rubro $it.categoryName), (Puntos-Rubro $it.searchString))
+  # Un rubro que pediste a mano (gimnasio, farmacia...) no tiene puntos en config.json: vale 30.
+  if (-not $puntos -and $Rubros -and ($rubros -contains ([string]$it.searchString).ToLower())) { $puntos = 30 }
   $puntos += Puntos-Resenas ([int]$it.reviewsCount)
   if ($tel.tipo -eq "movil") { $puntos += 15 } elseif ($tel.tipo -eq "fijo") { $puntos += 5 }
   if ($web -or $instagram) { $puntos += 10 }
@@ -259,7 +282,7 @@ if (-not $filas.Count) {
   Write-Host "No hay prospectos nuevos. $resumen" -ForegroundColor Yellow
   exit 0
 }
-$csv = Join-Path $salida "prospectos-$Zona-$marca.csv"
+$csv = Join-Path $salida "prospectos-$(Slug $Zona)-$marca.csv"
 [System.IO.File]::WriteAllText($csv, ($lineas -join "`r`n"), $utf8Bom)
 
 # Se marcan como vistos solo al exportar, para no contactarlos dos veces en la próxima corrida.

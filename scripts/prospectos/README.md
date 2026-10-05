@@ -2,26 +2,31 @@
 
 Busca negocios en Google Maps por ciudad y rubro, saca duplicados, cadenas y cerrados, puntúa cada lead y deja un CSV para importar en Google Sheets. Los locales sin teléfono quedan al final de la lista, para visitar en persona.
 
-## Una sola vez
-1. Creá la cuenta en [apify.com](https://apify.com) (trae USD 5 gratis, que alcanzan para ~1.250 lugares).
-2. Copiá el token: Settings → API & Integrations → Personal API token.
+## La forma fácil: `scrap`
+Doble clic en **`scrap.cmd`** (o `.\scrap.ps1` desde PowerShell). Te pregunta:
+1. **Dónde**: una zona de `config.json` (`cordoba`, `sierras`, `turisticas`) u otra ciudad que escribís vos (varias, separadas con `;`).
+2. **Qué rubros**: `0` = todos, o los números que quieras (ej: `1,2,8`), o "Otro" para escribir uno (gimnasio, farmacia...).
+3. **Cuántos lugares** por rubro y ciudad (Enter = 20).
 
-## Cada vez (PowerShell, desde esta carpeta)
+Muestra el costo, pide confirmación y, al terminar, abre la carpeta con el CSV.
+
+**Token de Apify**: la primera vez lo pide (console.apify.com → Settings → API & Integrations), comprueba que funcione y lo guarda **cifrado** en `%APPDATA%\MiTeam\apify-token.txt`. Solo tu usuario de Windows en esta PC lo puede leer. No se ve al pegarlo, no queda en el historial de PowerShell y nunca va al repo. Para cambiarlo: `.\scrap.ps1 -CambiarToken`.
+
+## La forma manual: `buscar.ps1`
 ```powershell
 cd scripts\prospectos
-$env:APIFY_TOKEN = "apify_api_..."        # dura lo que dura la terminal; nunca lo pegues en el repo ni en el chat
-.\buscar.ps1 -Zona cordoba -Max 10        # primera prueba: ~USD 1
-.\buscar.ps1 -Zona cordoba                # 40 lugares por rubro y ciudad (por defecto)
-.\buscar.ps1 -Zona sierras
-.\buscar.ps1 -Zona turisticas
+$env:APIFY_TOKEN = "apify_api_..."        # dura lo que dura la terminal (y queda en el historial: preferí scrap)
+.\buscar.ps1 -Zona cordoba -Max 10
+.\buscar.ps1 -Ciudades "Río Cuarto, Córdoba, Argentina" -Rubros parrilla,hotel -Nombre rio-cuarto
 ```
-Si Windows no deja correr scripts: `Set-ExecutionPolicy -Scope CurrentUser RemoteSigned` (una vez).
+Si Windows no deja correr scripts: `Set-ExecutionPolicy -Scope CurrentUser RemoteSigned` (una vez). `scrap.cmd` no lo necesita.
 
 Antes de gastar, muestra el costo máximo y pide confirmación (`-Si` la saltea).
 
 | Opción | Para qué |
 |---|---|
 | `-Zona` | `cordoba`, `sierras` o `turisticas` (se editan en `config.json`). |
+| `-Ciudades`, `-Rubros`, `-Nombre` | Ciudades y rubros a elección en vez de la zona; `-Nombre` va en el nombre del CSV. |
 | `-Max` | Tope de lugares por rubro y ciudad. Más alto = más leads y más costo. |
 | `-DesdeArchivo .\salida\crudo\*.json` | Reprocesa lo ya bajado sin pagar (por ejemplo, después de cambiar el puntaje o la lista de cadenas). |
 | `-IncluirVistos` | No descarta los lugares ya exportados en corridas anteriores. Usalo con `-DesdeArchivo` para regenerar un CSV que ya habías sacado. |
