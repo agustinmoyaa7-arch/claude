@@ -34,6 +34,11 @@ PGPASSWORD=postgres bash supabase/tests/run.sh
 - `/app/reporte`: compara el cuadro con los fichajes por día. Estados: en horario, tarde, salió antes, horas extra, ausente, pendiente, sin salida, en curso, franco trabajado. Tolerancia de 10 min. Descarga CSV (separador `;`, abre bien en Excel).
 - Lógica en la función SQL `reporte_plan_vs_real` (corre con los permisos del usuario, así que RLS limita a sus empresas).
 
+## Salir a producción y vender
+- Dominio, hosting y mails de alta: `docs/DOMINIO-HOSTING.md`.
+- La app se instala como PWA: el panel (`/app`) en el celular del dueño y el kiosco (`/kiosco`) en la tablet del local. Nombre e íconos provisorios en `lib/pwa.ts`.
+- Prospección de clientes con Apify: `scripts/prospectos/README.md`.
+
 ## Falta (en orden)
 1. Editar o anular fichajes desde el panel (cargar una salida olvidada), con auditoría.
 2. Panel maestro de New Wave (lista de empresas, MRR).

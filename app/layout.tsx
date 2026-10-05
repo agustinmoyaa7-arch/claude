@@ -1,10 +1,16 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
+import { COLOR_FONDO, NOMBRE_APP } from "@/lib/pwa";
 import "./globals.css";
 
 export const metadata: Metadata = {
   title: "Fichaje · New Wave",
   description: "Fichaje digital simple para PyMEs.",
+  manifest: "/pwa/panel",
+  appleWebApp: { capable: true, title: NOMBRE_APP, statusBarStyle: "default" },
+  icons: { apple: "/pwa/icono/192" },
 };
+
+export const viewport: Viewport = { themeColor: COLOR_FONDO };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (

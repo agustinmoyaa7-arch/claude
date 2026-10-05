@@ -1,7 +1,7 @@
 # Contexto de traspaso · New Wave Fichaje (SaaS multi-tenant)
 
 > Para retomar en una sesión nueva de Claude Code en local.
-> Actualizado: 2 de octubre de 2026. Moneda: ARS salvo que diga USD.
+> Actualizado: 5 de octubre de 2026. Moneda: ARS salvo que diga USD.
 > Contexto personal y de negocio completo: `contexto-fichaje-agustin-moya.md` (documento aparte de Agustín).
 
 ---
@@ -131,9 +131,11 @@ npm install
 
 ## 7. Pendientes de negocio
 
-- Nombre y dominio del producto (ideas: Pulso, Jornada, Marcá, Fichá; validar INPI, dominio e Instagram).
+- Nombre del producto (ideas: Pulso, Jornada, Marcá, Fichá; validar INPI, dominio e Instagram). **Decidido: dominio `.com`** en Cloudflare Registrar. Hosting y pasos: `docs/DOMINIO-HOSTING.md` (Netlify + Supabase + Resend para los mails de alta, ~USD 1/mes sin clientes y ~USD 35/mes con clientes).
+- App = **PWA** (sin tiendas): manifiesto del panel (`/pwa/panel`, abre en `/app`) y del kiosco (`/pwa/kiosco`, abre en `/kiosco`). Nombre provisorio en `lib/pwa.ts`.
 - Precio y planes definitivos.
 - Términos de uso y datos personales (Ley 25.326) antes del primer cliente externo.
-- Canal principal de venta: contadores (export de horas en su formato) + prospección con Apify.
+- Canal principal de venta: contadores (export de horas en su formato) + prospección con Apify. **Hecho:** `scripts/prospectos/buscar.ps1` (zonas Córdoba + Carlos Paz → Sierras → turísticas; CSV para Google Sheets; contacto por WhatsApp manual y visita). Plantillas en `scripts/prospectos/mensajes.md`.
+- Falta la ruta de confirmación del mail de alta (Supabase manda el link y la app no lo procesa). Hasta tenerla, desactivar "Confirm email" en los pilotos.
 - Pedir autorización de portfolio a Maga y El Pirata para casos en video.
 - Pedix como referencia (no verificado en detalle): Córdoba, 2020, ~3.000 tiendas creadas, crecimiento por producto (prueba gratis, sin vendedores). Facturación no pública.

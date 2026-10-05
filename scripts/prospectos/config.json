@@ -1,0 +1,43 @@
+{
+  "actor": "compass~crawler-google-places",
+  "usd_por_mil_lugares": 4,
+  "zonas": {
+    "cordoba": ["Córdoba, Córdoba, Argentina", "Villa Carlos Paz, Córdoba, Argentina"],
+    "sierras": [
+      "Cosquín, Córdoba, Argentina",
+      "La Falda, Córdoba, Argentina",
+      "Capilla del Monte, Córdoba, Argentina",
+      "Villa General Belgrano, Córdoba, Argentina",
+      "Santa Rosa de Calamuchita, Córdoba, Argentina",
+      "Mina Clavero, Córdoba, Argentina",
+      "Alta Gracia, Córdoba, Argentina"
+    ],
+    "turisticas": [
+      "Mar del Plata, Buenos Aires, Argentina",
+      "San Carlos de Bariloche, Río Negro, Argentina",
+      "Mendoza, Mendoza, Argentina",
+      "Salta, Salta, Argentina",
+      "Villa Gesell, Buenos Aires, Argentina",
+      "Pinamar, Buenos Aires, Argentina",
+      "Puerto Madryn, Chubut, Argentina",
+      "San Martín de los Andes, Neuquén, Argentina",
+      "Merlo, San Luis, Argentina"
+    ]
+  },
+  "rubros": [
+    "restaurante", "parrilla", "pizzería", "bar", "cafetería", "heladería",
+    "panadería", "hotel", "hostería", "cabañas", "supermercado", "autoservicio"
+  ],
+  "puntos_rubro": {
+    "parrilla": 40, "restaurante": 40, "pizzería": 35, "hotel": 40, "hostería": 35,
+    "heladería": 35, "panadería": 35, "cafetería": 30, "bar": 30, "cervecería": 30,
+    "cabaña": 25, "complejo": 25, "supermercado": 30, "autoservicio": 25, "almacén": 15
+  },
+  "excluir_cadenas": [
+    "mcdonald", "burger king", "mostaza", "grido", "freddo", "starbucks", "havanna",
+    "café martínez", "bonafide", "subway", "kfc", "wendy", "carrefour", "supermercado disco",
+    "supermercados vea", "jumbo", "changomás", "supermercado día", "supermercados día", "coto",
+    "la anónima", "cordiez", "hipermercado libertad"
+  ],
+  "mensaje_whatsapp": "Hola! ¿Hablo con {nombre}? Soy Agustín, de Córdoba. Armé un sistema de fichaje para que tus empleados marquen entrada y salida desde una tablet, y vos veas tardanzas y horas extra desde el celular, sin planillas. ¿Te puedo mostrar en 10 minutos cómo funciona?"
+}
