@@ -72,6 +72,9 @@ function Buscar-Ciudad([string]$Ciudad) {
   $campos = "title,categoryName,searchString,address,city,phone,phoneUnformatted,website,totalScore,reviewsCount,placeId,url,location,permanentlyClosed,temporarilyClosed"
   $items = Invoke-Apify GET "/datasets/$($run.defaultDatasetId)/items?clean=true&format=json&fields=$campos"
   if (-not @($items).Count) { Write-Host "  sin resultados"; return @() }
+  # Google a veces pone el código postal en "city": se guarda la ciudad buscada como respaldo.
+  $buscada = $Ciudad.Split(",")[0].Trim()
+  foreach ($it in $items) { $it | Add-Member -NotePropertyName _ciudad -NotePropertyValue $buscada -Force }
   # Se guarda lo bajado: si algo falla después, se reprocesa con -DesdeArchivo sin volver a pagar.
   $nombre = ($Ciudad.Split(",")[0] -replace "[^\w]+", "-").ToLower()
   $archivo = Join-Path $crudo "$marca-$nombre.json"
@@ -133,6 +136,13 @@ function Es-Cadena([string]$Nombre) {
   return $false
 }
 
+# "Complejo Le Mirage: Departamentos y cabañas..." -> "Complejo Le Mirage" (para el saludo de WhatsApp).
+function Nombre-Corto([string]$Nombre) {
+  $corto = ($Nombre -split '\s+[-–—|]\s+|:|\[|\(')[0].Trim()
+  if ($corto.Length -lt 3) { return $Nombre.Trim() }
+  return $corto
+}
+
 # ---------------------------------------------------------------- CSV
 
 # Evita que Sheets/Excel tomen texto como fórmula y escapa ';' y comillas.
@@ -154,7 +164,14 @@ if ($DesdeArchivo) {
   if (-not $archivos.Count) { throw "No encontré archivos en: $DesdeArchivo" }
   foreach ($a in $archivos) {
     $texto = Get-Content -Raw -Encoding UTF8 $a.FullName
-    if ($texto) { $items += ($texto | ConvertFrom-Json) }
+    if (-not $texto) { continue }
+    $leidos = $texto | ConvertFrom-Json
+    # Archivos bajados antes de este cambio: la ciudad sale del nombre ("2026-10-04_2227-villa-carlos-paz.json").
+    if ($a.BaseName -match '^\d{4}-\d{2}-\d{2}_\d{4}-(.+)$') {
+      $deArchivo = (Get-Culture).TextInfo.ToTitleCase($Matches[1].Replace("-", " "))
+      foreach ($it in $leidos) { if (-not $it._ciudad) { $it | Add-Member -NotePropertyName _ciudad -NotePropertyValue $deArchivo -Force } }
+    }
+    $items += $leidos
   }
   if (-not $Zona) { $Zona = "archivo" }
 }
@@ -195,7 +212,8 @@ foreach ($it in $items) {
   if ($it.permanentlyClosed -or $it.temporarilyClosed) { $cuenta.cerrados++; continue }
   if (Es-Cadena $it.title) { $cuenta.cadenas++; continue }
   $tel = Normalizar-Telefono $it.phoneUnformatted $it.phone
-  if (-not $tel) { $cuenta.sin_telefono++; continue }
+  # Sin teléfono no se descarta: sirve para visitar en persona.
+  if (-not $tel) { $cuenta.sin_telefono++; $tel = @{ tipo = "sin_tel"; link = "" } }
 
   $web = [string]$it.website
   $instagram = ""
@@ -209,12 +227,15 @@ foreach ($it in $items) {
 
   $link = ""
   if ($tel.link) {
-    $texto = $cfg.mensaje_whatsapp.Replace("{nombre}", [string]$it.title)
+    $texto = $cfg.mensaje_whatsapp.Replace("{nombre}", (Nombre-Corto ([string]$it.title)))
     $link = $tel.link + "?text=" + [uri]::EscapeDataString($texto)
   }
 
+  $ciudad = [string]$it.city
+  if (-not $ciudad -or $ciudad -match '^[A-Z]\d{4}') { $ciudad = $it._ciudad }
+
   $filas += [pscustomobject]@{
-    puntaje = [math]::Min($puntos, 100); nombre = $it.title; rubro = $rubro; ciudad = $it.city
+    puntaje = [math]::Min($puntos, 100); nombre = $it.title; rubro = $rubro; ciudad = $ciudad
     direccion = $it.address; telefono = ([string]$it.phone).TrimStart("+"); tipo_tel = $tel.tipo; whatsapp_link = $link
     web = $web; instagram = $instagram; rating = (Decimal $it.totalScore); resenas = $it.reviewsCount
     maps_url = $it.url; lat = (Decimal $it.location.lat); lng = (Decimal $it.location.lng)
@@ -222,7 +243,8 @@ foreach ($it in $items) {
   }
 }
 
-$filas = @($filas | Sort-Object -Property @{ Expression = "puntaje"; Descending = $true }, @{ Expression = "nombre" })
+# Primero los que tienen teléfono (WhatsApp), al final los que solo sirven para visitar.
+$filas = @($filas | Sort-Object -Property @{ Expression = { $_.tipo_tel -ne "sin_tel" }; Descending = $true }, @{ Expression = "puntaje"; Descending = $true }, @{ Expression = "nombre" })
 $columnas = "puntaje", "nombre", "rubro", "ciudad", "direccion", "telefono", "tipo_tel", "whatsapp_link", "web", "instagram", "rating", "resenas", "maps_url", "lat", "lng", "place_id", "fecha_scrap"
 $seguimiento = "estado", "fecha_contacto", "proximo_paso", "notas", "no_llame_ok"
 $lineas = New-Object System.Collections.Generic.List[string]
@@ -231,8 +253,8 @@ foreach ($f in $filas) {
   $valores = foreach ($c in $columnas) { Celda $f.$c }
   $lineas.Add(((@($valores) + @("nuevo", "", "", "", "")) -join ";"))
 }
-$resumen = "Descartados: {0} repetidos, {1} ya exportados antes, {2} cerrados, {3} cadenas, {4} sin teléfono (de {5} lugares)." -f `
-  $cuenta.repetidos, $cuenta.ya_vistos, $cuenta.cerrados, $cuenta.cadenas, $cuenta.sin_telefono, $cuenta.total
+$resumen = "Descartados: {0} repetidos, {1} ya exportados antes, {2} cerrados, {3} cadenas (de {4} lugares). {5} sin teléfono quedan al final, para visitar." -f `
+  $cuenta.repetidos, $cuenta.ya_vistos, $cuenta.cerrados, $cuenta.cadenas, $cuenta.total, $cuenta.sin_telefono
 if (-not $filas.Count) {
   Write-Host "No hay prospectos nuevos. $resumen" -ForegroundColor Yellow
   exit 0

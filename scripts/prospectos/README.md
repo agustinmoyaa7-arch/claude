@@ -1,6 +1,6 @@
 # Prospección con Apify
 
-Busca negocios en Google Maps por ciudad y rubro, saca duplicados, cadenas, cerrados y locales sin teléfono, puntúa cada lead y deja un CSV para importar en Google Sheets.
+Busca negocios en Google Maps por ciudad y rubro, saca duplicados, cadenas y cerrados, puntúa cada lead y deja un CSV para importar en Google Sheets. Los locales sin teléfono quedan al final de la lista, para visitar en persona.
 
 ## Una sola vez
 1. Creá la cuenta en [apify.com](https://apify.com) (trae USD 5 gratis, que alcanzan para ~1.250 lugares).
@@ -24,7 +24,7 @@ Antes de gastar, muestra el costo máximo y pide confirmación (`-Si` la saltea)
 | `-Zona` | `cordoba`, `sierras` o `turisticas` (se editan en `config.json`). |
 | `-Max` | Tope de lugares por rubro y ciudad. Más alto = más leads y más costo. |
 | `-DesdeArchivo .\salida\crudo\*.json` | Reprocesa lo ya bajado sin pagar (por ejemplo, después de cambiar el puntaje o la lista de cadenas). |
-| `-IncluirVistos` | No descarta los lugares ya exportados en corridas anteriores. |
+| `-IncluirVistos` | No descarta los lugares ya exportados en corridas anteriores. Usalo con `-DesdeArchivo` para regenerar un CSV que ya habías sacado. |
 
 ## Qué deja en `salida/` (no se sube a git)
 - `prospectos-<zona>-<fecha_hora>.csv`: los leads nuevos, ordenados por puntaje.
@@ -37,7 +37,7 @@ Antes de gastar, muestra el costo máximo y pide confirmación (`-Si` la saltea)
 - **Teléfono**: +15 si es celular, +5 si es fijo.
 - **Web o Instagram**: +10.
 
-`tipo_tel`: `movil` (el link de WhatsApp debería andar), `fijo` (probá el link; si WhatsApp dice que no existe, llamá o visitá) o `dudoso` (número raro, sin link).
+`tipo_tel`: `movil` (el link de WhatsApp debería andar), `fijo` (probá el link; si WhatsApp dice que no existe, llamá o visitá), `dudoso` (número raro, sin link) o `sin_tel` (solo para visitar).
 
 ## Armar el Google Sheet
 1. Sheets → Archivo → Importar → Subir el CSV → "Insertar nuevas hojas" → separador **punto y coma**.
