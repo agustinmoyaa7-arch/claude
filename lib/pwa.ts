@@ -1,7 +1,7 @@
 import type { MetadataRoute } from "next";
 
-// Nombre provisorio hasta definir la marca: cambiarlo acá cambia los dos manifiestos.
-export const NOMBRE_APP = "Fichaje";
+// Cambiar el nombre acá cambia los dos manifiestos, el título en iPhone y el ícono.
+export const NOMBRE_APP = "MiTeam";
 export const COLOR_FONDO = "#18181b";
 export const TAMANOS_ICONO = [192, 512] as const;
 

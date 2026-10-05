@@ -1,4 +1,4 @@
-# New Wave Fichaje
+# MiTeam
 
 Fichaje digital multi-tenant para PyMEs. **Una app, una base, muchas empresas.**
 Next.js (App Router) + Supabase (Postgres + Auth + RLS).
@@ -36,7 +36,7 @@ PGPASSWORD=postgres bash supabase/tests/run.sh
 
 ## Salir a producción y vender
 - Dominio, hosting y mails de alta: `docs/DOMINIO-HOSTING.md`.
-- La app se instala como PWA: el panel (`/app`) en el celular del dueño y el kiosco (`/kiosco`) en la tablet del local. Nombre e íconos provisorios en `lib/pwa.ts`.
+- La app se instala como PWA: el panel (`/app`) en el celular del dueño y el kiosco (`/kiosco`) en la tablet del local. Nombre en `lib/pwa.ts`; íconos provisorios hasta tener el logo.
 - Prospección de clientes con Apify: `scripts/prospectos/README.md`.
 
 ## Falta (en orden)

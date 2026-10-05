@@ -3,7 +3,7 @@ import { COLOR_FONDO, NOMBRE_APP } from "@/lib/pwa";
 import "./globals.css";
 
 export const metadata: Metadata = {
-  title: "Fichaje · New Wave",
+  title: "MiTeam · Fichaje para tu negocio",
   description: "Fichaje digital simple para PyMEs.",
   manifest: "/pwa/panel",
   appleWebApp: { capable: true, title: NOMBRE_APP, statusBarStyle: "default" },

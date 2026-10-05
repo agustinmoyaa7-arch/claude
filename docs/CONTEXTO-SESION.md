@@ -1,4 +1,4 @@
-# Contexto de traspaso · New Wave Fichaje (SaaS multi-tenant)
+# Contexto de traspaso · MiTeam (SaaS multi-tenant de New Wave)
 
 > Para retomar en una sesión nueva de Claude Code en local.
 > Actualizado: 5 de octubre de 2026. Moneda: ARS salvo que diga USD.
@@ -43,7 +43,7 @@ El documento de contexto propone: Gratis (3 empleados) · Básico $18.000 (10) �
 
 ### Números de referencia (estimaciones, no validadas)
 - Neto por cliente a $25.000: ~$23.500 tras Mercado Pago (~6% con IVA).
-- Costos fijos: ~USD 45/mes (Supabase Pro + Vercel/Netlify).
+- Costos fijos: ~USD 45/mes (Supabase Pro + hosting Hostinger Business ~USD 17/mes al renovar + dominio).
 - Para cubrir gastos fijos personales (~$848.000/mes) hacen falta ~36–40 clientes.
 - Churn esperable en SaaS PyME LatAm: 3–8% mensual; los comercios de temporada cancelan en marzo.
 
@@ -105,7 +105,7 @@ Usar como base del producto la app **más completa** (hoy: El Pirata; confirmar 
 - No se revisó el historial completo de commits de El Pirata (clon superficial). Si alguna vez se subió un `.env`, rotar claves (`PIN_PEPPER` invalida todos los PIN).
 - **Propiedad del código:** El Pirata y Maga son desarrollos para clientes (El Pirata tiene su logo). Revisar que el acuerdo permita reutilizarlo comercialmente.
 - Nunca usar la base de producción de Maga o El Pirata para desarrollar. Proyecto de Supabase **nuevo** para desarrollo.
-- Claves (`service_role`, `PIN_PEPPER`, `SESSION_SECRET`) solo en `.env.local` o en Netlify/Vercel. Nunca en el repo ni en el chat.
+- Claves (`service_role`, `PIN_PEPPER`, `SESSION_SECRET`) solo en `.env.local` o en las variables de entorno del hosting (Hostinger para MiTeam). Nunca en el repo ni en el chat.
 
 ---
 
@@ -131,8 +131,9 @@ npm install
 
 ## 7. Pendientes de negocio
 
-- Nombre del producto (ideas: Pulso, Jornada, Marcá, Fichá; validar INPI, dominio e Instagram). **Decidido: dominio `.com`** en Cloudflare Registrar. Hosting y pasos: `docs/DOMINIO-HOSTING.md` (Netlify + Supabase + Resend para los mails de alta, ~USD 1/mes sin clientes y ~USD 35/mes con clientes).
-- App = **PWA** (sin tiendas): manifiesto del panel (`/pwa/panel`, abre en `/app`) y del kiosco (`/pwa/kiosco`, abre en `/kiosco`). Nombre provisorio en `lib/pwa.ts`.
+- **Decidido (5/10):** nombre **MiTeam**, dominio **miteam.online** (comprado en Hostinger; renueva a ~USD 36/año, evaluar `miteam.com` antes de renovar). Validar marca en INPI.
+- **Hosting:** Hostinger **Business** con Node.js Web Apps (el Premium que se compró primero no corre Next.js). Deploy automático desde la rama **`main`** de `agustinmoyaa7-arch/claude`. Correo `hola@miteam.online` en Hostinger, que también es el SMTP de Supabase Auth. Paso a paso: `docs/DOMINIO-HOSTING.md`. Netlify descartado para MiTeam.
+- App = **PWA** (sin tiendas): manifiesto del panel (`/pwa/panel`, abre en `/app`) y del kiosco (`/pwa/kiosco`, abre en `/kiosco`). Nombre en `lib/pwa.ts`; íconos provisorios.
 - Precio y planes definitivos.
 - Términos de uso y datos personales (Ley 25.326) antes del primer cliente externo.
 - Canal principal de venta: contadores (export de horas en su formato) + prospección con Apify. **Hecho:** `scripts/prospectos/buscar.ps1` (zonas Córdoba + Carlos Paz → Sierras → turísticas; CSV para Google Sheets; contacto por WhatsApp manual y visita). Plantillas en `scripts/prospectos/mensajes.md`.
