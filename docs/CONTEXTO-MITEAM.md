@@ -2,6 +2,7 @@
 
 > Pegá este archivo al inicio de un chat nuevo. Estado al **5 de octubre de 2026**.
 > Moneda: ARS salvo que diga USD. Huso horario: `America/Argentina/Buenos_Aires`.
+> Qué hace la app por dentro (pantallas, reglas, qué prometer y qué no): `docs/APP-MITEAM.md`.
 > Detalle técnico extra en el repo: `README.md`, `docs/CONTEXTO-SESION.md`, `docs/DOMINIO-HOSTING.md`, `scripts/prospectos/README.md`.
 
 ---
