@@ -1,0 +1,26 @@
+{
+  "name": "miteam-reel",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Reel de lanzamiento de MiTeam hecho con Remotion",
+  "scripts": {
+    "studio": "remotion studio",
+    "render": "remotion render Lanzamiento out/miteam-reel-lanzamiento.mp4",
+    "portada": "remotion still Lanzamiento out/portada.png --frame=60"
+  },
+  "dependencies": {
+    "@fontsource-variable/fraunces": "^5.2.5",
+    "@fontsource/jetbrains-mono": "^5.2.5",
+    "@fontsource/kalam": "^5.2.5",
+    "@fontsource/outfit": "^5.2.5",
+    "@remotion/cli": "4.0.534",
+    "@remotion/transitions": "4.0.534",
+    "react": "19.2.8",
+    "react-dom": "19.2.8",
+    "remotion": "4.0.534"
+  },
+  "devDependencies": {
+    "@types/react": "^19",
+    "typescript": "^5"
+  }
+}
