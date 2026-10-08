@@ -6,7 +6,9 @@
   "scripts": {
     "studio": "remotion studio",
     "render": "remotion render Lanzamiento out/miteam-reel-lanzamiento.mp4",
-    "portada": "remotion still Lanzamiento out/portada.png --frame=60"
+    "portada": "remotion still Lanzamiento out/portada.png --frame=60",
+    "render:presentacion": "remotion render Presentacion out/miteam-reel-presentacion.mp4",
+    "portada:presentacion": "remotion still Presentacion out/portada-presentacion.png --frame=110"
   },
   "dependencies": {
     "@fontsource-variable/fraunces": "^5.2.5",

@@ -3,7 +3,7 @@ import { AbsoluteFill, interpolate, useCurrentFrame } from "remotion";
 import { pop, subir, useEntrada, useTrazo } from "./anim";
 import { C, Check, display, F, Icono, Logo, Mascota, SAFE } from "./brand";
 
-const Escena: React.FC<{ fondo: string; children: React.ReactNode }> = ({ fondo, children }) => (
+export const Escena: React.FC<{ fondo: string; children: React.ReactNode }> = ({ fondo, children }) => (
   <AbsoluteFill
     style={{
       background: fondo,
@@ -16,7 +16,7 @@ const Escena: React.FC<{ fondo: string; children: React.ReactNode }> = ({ fondo,
   </AbsoluteFill>
 );
 
-const Subir: React.FC<{ delay: number; style?: React.CSSProperties; children: React.ReactNode }> = ({
+export const Subir: React.FC<{ delay: number; style?: React.CSSProperties; children: React.ReactNode }> = ({
   delay,
   style,
   children,
@@ -25,7 +25,7 @@ const Subir: React.FC<{ delay: number; style?: React.CSSProperties; children: Re
   return <div style={{ ...style, ...subir(p) }}>{children}</div>;
 };
 
-const Pop: React.FC<{ delay: number; giro?: number; style?: React.CSSProperties; children: React.ReactNode }> = ({
+export const Pop: React.FC<{ delay: number; giro?: number; style?: React.CSSProperties; children: React.ReactNode }> = ({
   delay,
   giro = 0,
   style,
@@ -35,7 +35,7 @@ const Pop: React.FC<{ delay: number; giro?: number; style?: React.CSSProperties;
   return <div style={{ ...style, ...pop(p, 0.5, giro) }}>{children}</div>;
 };
 
-const Mano: React.FC<{ delay: number; color: string; size?: number; giro?: number; children: React.ReactNode }> = ({
+export const Mano: React.FC<{ delay: number; color: string; size?: number; giro?: number; children: React.ReactNode }> = ({
   delay,
   color,
   size = 64,
@@ -47,7 +47,7 @@ const Mano: React.FC<{ delay: number; color: string; size?: number; giro?: numbe
   </Pop>
 );
 
-const Chip: React.FC<{ color: string; fondo: string; children: React.ReactNode }> = ({ color, fondo, children }) => (
+export const Chip: React.FC<{ color: string; fondo: string; children: React.ReactNode }> = ({ color, fondo, children }) => (
   <span style={{ fontSize: 30, fontWeight: 600, color, background: fondo, padding: "12px 24px", borderRadius: 40, whiteSpace: "nowrap" }}>
     {children}
   </span>
@@ -418,7 +418,7 @@ const FilaPlan: React.FC<{ plan: (typeof PLANES)[number]; delay: number }> = ({ 
   );
 };
 
-export const Precios: React.FC = () => (
+export const Precios: React.FC<{ pie?: string }> = ({ pie = "En pesos. Anual: 2 meses de regalo." }) => (
   <Escena fondo={C.dark}>
     <Subir delay={0}>
       <h1 style={{ ...display, fontSize: 132, lineHeight: 1.02, color: C.white }}>
@@ -434,7 +434,7 @@ export const Precios: React.FC = () => (
     </div>
     <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
       <Subir delay={44}>
-        <span style={{ fontSize: 38, color: C.mutedDark }}>En pesos. Anual: 2 meses de regalo.</span>
+        <span style={{ fontSize: 38, color: C.mutedDark }}>{pie}</span>
       </Subir>
     </div>
   </Escena>

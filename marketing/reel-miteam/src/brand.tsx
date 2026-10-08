@@ -61,7 +61,9 @@ export const Mascota: React.FC<{
   color: string;
   chispas?: number; // 0 a 1: cuánto se ven las chispas
   parpadeo?: number; // 0 a 1: cuánto se cierran los ojos
-}> = ({ width, color, chispas, parpadeo = 0 }) => {
+  dibujo?: number; // 0 a 1: cuánto de la M está dibujado
+  ojos?: number; // 0 a 1: cuánto se ven los ojos
+}> = ({ width, color, chispas, parpadeo = 0, dibujo = 1, ojos = 1 }) => {
   const conChispas = chispas !== undefined;
   const viewBox = conChispas ? "4 14 92 66" : "18 18 64 60";
   const [, , vw, vh] = viewBox.split(" ").map(Number);
@@ -75,8 +77,8 @@ export const Mascota: React.FC<{
       strokeLinecap="round"
       strokeLinejoin="round"
     >
-      <path d={OREJAS} strokeWidth={6.6} />
-      <g style={{ transformOrigin: "50px 55px", transform: `scaleY(${1 - parpadeo * 0.7})` }}>
+      <path d={OREJAS} strokeWidth={6.6} pathLength={1} strokeDasharray={1} strokeDashoffset={1 - dibujo} />
+      <g style={{ transformOrigin: "50px 55px", transform: `scaleY(${(1 - parpadeo * 0.7) * ojos})`, opacity: ojos }}>
         <path d={OJOS} strokeWidth={3.6} />
       </g>
       {conChispas && (
