@@ -12,6 +12,10 @@ Escenas, en orden: ¿Quién llegó tarde hoy? → Chau planilla → Fichan con u
 npm run render:presentacion   # genera out/miteam-reel-presentacion.mp4
 ```
 
+Efectos de sonido: barridos de viento en cada cambio de escena, pops, taps del PIN, clic, campanas, marcador y destellos. Se generan por síntesis con `python sfx/generar_sfx.py` (solo necesita numpy) y quedan en `public/sfx/`. Cuándo suena cada uno y a qué volumen: lista `SFX` en `src/Presentacion.tsx`.
+
+Garabatos animados de la hoja de recursos (rayitas, subrayados, flechas, destellos, garabatos, onda de clic): `src/garabatos.tsx`. Dónde va cada uno: `CAPAS` en `src/Presentacion.tsx`.
+
 ## Usarlo en tu PC
 
 Desde esta carpeta, en PowerShell:

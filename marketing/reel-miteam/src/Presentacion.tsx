@@ -3,6 +3,7 @@ import { AbsoluteFill, Audio, interpolate, Sequence, staticFile, useCurrentFrame
 import { pop, useEntrada, useTrazo } from "./anim";
 import { C, Check, display, F, Mascota } from "./brand";
 import { CierreMes, Escena, Kiosco, Mano, PlanVsReal, Pop, Precios, SinInternet, Subir } from "./escenas";
+import { Destello, FlechaCurva, Garabato, OndaClic, Rayitas, Subrayado } from "./garabatos";
 
 const FPS = 30;
 const s = (segundos: number) => Math.round(segundos * FPS);
@@ -207,6 +208,86 @@ const LogoFinal: React.FC = () => {
 
 const PreciosVoz: React.FC = () => <Precios pie="En pesos, y sin letra chica." />;
 
+// Garabatos de la marca encima de cada escena (posiciones en px del cuadro de 1080×1920).
+const CAPAS: Record<string, React.FC> = {
+  intro: () => (
+    <>
+      <Rayitas x={300} y={470} angulo={215} delay={24} color={C.violet} />
+      <Rayitas x={780} y={470} angulo={325} delay={24} color={C.violet} />
+      <Destello x={905} y={905} delay={30} color={C.violet} tam={64} />
+      <Subrayado x={200} y={1224} ancho={680} delay={56} color={C.violet} />
+    </>
+  ),
+  rubros: () => (
+    <>
+      <Destello x={975} y={545} delay={64} color={C.violetLight} />
+      <Garabato x={90} y={1225} ancho={280} delay={70} color={C.violetLight} />
+    </>
+  ),
+  planilla: () => <Rayitas x={1000} y={1225} angulo={315} delay={92} color={C.violet} largo={50} grosor={9} />,
+  kiosco: () => (
+    <>
+      <Destello x={790} y={300} delay={8} color={C.violet} tam={60} />
+      <Rayitas x={180} y={770} angulo={205} delay={52} color={C.violet} />
+      <Rayitas x={900} y={770} angulo={335} delay={52} color={C.violet} />
+    </>
+  ),
+  "sin-hardware": () => (
+    <>
+      <Rayitas x={1000} y={975} angulo={320} delay={40} color={C.violetLight} largo={55} />
+      <Destello x={95} y={960} delay={44} color={C.violetLight} tam={54} />
+    </>
+  ),
+  "plan-vs-real": () => (
+    <>
+      <Subrayado x={90} y={606} ancho={620} delay={12} color={C.violetLight} />
+      <Destello x={960} y={300} delay={18} color={C.violetLight} />
+    </>
+  ),
+  "sin-internet": () => (
+    <>
+      <Garabato x={560} y={470} ancho={300} delay={10} color={C.white} />
+      <Rayitas x={985} y={1035} angulo={320} delay={42} color={C.white} largo={55} />
+    </>
+  ),
+  "cierre-mes": () => (
+    <>
+      <OndaClic x={703} y={1056} delay={40} color={C.violetLight} />
+      <Rayitas x={703} y={1056} angulo={250} delay={40} color={C.violet} largo={45} grosor={8} fugaz />
+      <Destello x={262} y={1215} delay={52} color={C.violet} tam={60} />
+    </>
+  ),
+  precios: () => (
+    <>
+      <Subrayado x={90} y={518} ancho={720} delay={10} color={C.violetLight} />
+      <Destello x={985} y={890} delay={26} color={C.white} tam={58} />
+    </>
+  ),
+  probalo: () => (
+    <>
+      <Destello x={880} y={560} delay={10} color={C.violet} />
+      <Destello x={150} y={700} delay={16} color={C.violet} tam={44} />
+      <FlechaCurva x={40} y={1150} ancho={190} giro={-10} delay={30} color={C.violet} />
+      <Rayitas x={875} y={1060} angulo={320} delay={28} color={C.violet} />
+    </>
+  ),
+  "comenta-app": () => (
+    <>
+      <Rayitas x={245} y={715} angulo={215} delay={12} color={C.white} />
+      <Rayitas x={835} y={715} angulo={325} delay={12} color={C.white} />
+      <Destello x={870} y={1090} delay={18} color={C.white} />
+      <Destello x={190} y={1080} delay={22} color={C.white} tam={44} />
+    </>
+  ),
+  logo: () => (
+    <>
+      <Rayitas x={205} y={700} angulo={210} delay={26} color={C.violet} largo={80} />
+      <Rayitas x={875} y={700} angulo={330} delay={26} color={C.violet} largo={80} />
+      <Destello x={905} y={600} delay={34} color={C.violet} tam={60} />
+    </>
+  ),
+};
+
 // Cada escena arranca cuando la voz dice su frase (segundos medidos en voz-presentacion.mp3).
 const ESCENAS: { id: string; Comp: React.FC; desde: number }[] = [
   { id: "intro", Comp: Intro, desde: 0 }, // Somos MiTeam, el software de control horario…
@@ -223,19 +304,57 @@ const ESCENAS: { id: string; Comp: React.FC; desde: number }[] = [
   { id: "logo", Comp: LogoFinal, desde: 48.1 }, // la M de la mascota
 ];
 
+// Efectos de sonido: [segundo, archivo en public/sfx, volumen]. Cada uno cae en lo que pasa en pantalla.
+const SFX: [number, string, number][] = [
+  // Intro: la M se dibuja, se abren los ojos, sube el nombre
+  [0.0, "marcador", 0.25], [0.55, "whoosh-corto", 0.22], [0.67, "pop", 0.35], [0.8, "destello", 0.18], [1.87, "marcador", 0.18],
+  // Rubros
+  [4.8, "whoosh-corto", 0.3], [5.07, "pop", 0.28], [6.0, "pop", 0.28], [6.93, "pop", 0.28],
+  // Planilla y cuaderno tachados
+  [8.35, "whoosh-corto", 0.3], [8.7, "pop-grave", 0.22], [8.9, "pop-grave", 0.22], [9.63, "marcador", 0.3], [10.03, "marcador", 0.3], [11.23, "pop", 0.28], [11.55, "destello", 0.16],
+  // Kiosco: PIN, OK y saludo
+  [12.55, "whoosh", 0.32], [13.35, "tap", 0.3], [13.58, "tap", 0.3], [13.82, "tap", 0.3], [14.05, "tap", 0.3], [14.28, "tap", 0.36], [14.42, "campana", 0.3],
+  // Sin relojes, sin huelleros
+  [17.1, "whoosh-corto", 0.28], [17.25, "golpe", 0.35], [17.72, "golpe", 0.35], [18.25, "pop", 0.3], [18.6, "destello", 0.14],
+  // Plan vs. real
+  [19.72, "whoosh", 0.32], [20.3, "marcador", 0.18], [20.77, "tap", 0.2], [21.07, "tap", 0.2], [21.37, "tap", 0.2], [21.67, "tap", 0.2],
+  // Sin internet
+  [26.95, "whoosh-corto", 0.3], [27.1, "golpe", 0.3], [28.05, "whoosh-corto", 0.2], [28.43, "campana", 0.26],
+  // Cierre de mes: checks, clic y Excel
+  [30.62, "whoosh", 0.32], [31.27, "tap", 0.2], [31.47, "tap", 0.2], [31.67, "tap", 0.2], [32.07, "clic", 0.45], [32.4, "pop-grave", 0.3], [32.55, "destello", 0.18],
+  // Precios
+  [36.95, "whoosh-corto", 0.3], [37.43, "marcador", 0.2], [37.57, "whoosh-corto", 0.1], [37.83, "whoosh-corto", 0.1], [38.1, "whoosh-corto", 0.1], [38.0, "destello", 0.15],
+  // Probalo en la web
+  [41.22, "whoosh", 0.32], [41.75, "destello", 0.15], [42.2, "pop", 0.36], [42.4, "marcador", 0.2],
+  // Comentá APP
+  [44.6, "whoosh-corto", 0.3], [44.95, "pop-grave", 0.4], [45.1, "destello", 0.2],
+  // Logo final: la M se dibuja, ojos, campana y parpadeo
+  [47.75, "whoosh-largo", 0.32], [48.1, "marcador", 0.25], [48.77, "pop", 0.35], [48.95, "campana-final", 0.3], [49.83, "tap", 0.12],
+];
+
 const FUNDIDO = 8;
 export const DURACION_PRESENTACION = s(51);
 
-// Entra cada escena con un fundido corto y una leve subida, encima de la anterior.
+// Entra cada escena con un fundido corto, una leve subida y un poco de zoom, encima de la anterior.
 const Entrada: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const frame = useCurrentFrame();
   const p = interpolate(frame, [0, FUNDIDO], [0, 1], { extrapolateRight: "clamp" });
-  return <AbsoluteFill style={{ opacity: p, transform: `translateY(${(1 - p) * 40}px)` }}>{children}</AbsoluteFill>;
+  const suave = 1 - (1 - p) ** 3;
+  return (
+    <AbsoluteFill style={{ opacity: p, transform: `translateY(${(1 - suave) * 60}px) scale(${0.97 + 0.03 * suave})` }}>
+      {children}
+    </AbsoluteFill>
+  );
 };
 
 export const Presentacion: React.FC = () => (
   <AbsoluteFill style={{ background: C.white }}>
     <Audio src={staticFile("voz-presentacion.mp3")} />
+    {SFX.map(([seg, archivo, volumen], i) => (
+      <Sequence key={`sfx-${i}`} from={s(seg)} durationInFrames={s(2.5)} name={`sfx ${archivo}`}>
+        <Audio src={staticFile(`sfx/${archivo}.wav`)} volume={volumen} />
+      </Sequence>
+    ))}
     {ESCENAS.map(({ id, Comp, desde }, i) => {
       const inicio = s(desde);
       const fin = i < ESCENAS.length - 1 ? s(ESCENAS[i + 1].desde) + FUNDIDO : DURACION_PRESENTACION;
@@ -243,6 +362,7 @@ export const Presentacion: React.FC = () => (
         <Sequence key={id} from={inicio} durationInFrames={fin - inicio} name={id}>
           <Entrada>
             <Comp />
+            {CAPAS[id] && <AbsoluteFill style={{ pointerEvents: "none" }}>{React.createElement(CAPAS[id])}</AbsoluteFill>}
           </Entrada>
         </Sequence>
       );
