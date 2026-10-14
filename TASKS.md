@@ -4,6 +4,9 @@ Pendientes de marketing de MiTeam. (vos) = lo hacés vos · (Claude) = lo hago y
 
 ## Active
 
+- [ ] **Video recorrido de la app con Recordly** - (vos), desde la PC, con el guion de los 5 pasos
+  - Si me pasás el MP4 exportado, le sumo el cierre con la M y los textos.
+  - Antes de grabar, confirmá que existen la rotación automática, los avisos de descanso y la aprobación de horas extra.
 - [ ] **Reels del plan de 14 días que no armamos todavía** - (vos + Claude), el primero sale el jue 15/10
   - Que yo sepa, solo está hecho el 6 · Temporada. Si ya tenés alguno, avisame y lo tacho.
   - Faltan: 1 · Wifi (15/10), 2 · Salida olvidada (16/10), 3 · Cierre de mes (19/10), 4 · 12 h de descanso (20/10), 5 · Martín "a horario" (21/10), 7 · Rotar turnos (23/10), 8 · Pulso (26/10), 9 · Testimonio (27/10), 10 · Lo que cuesta Martín (28/10).
@@ -42,7 +45,6 @@ Pendientes de marketing de MiTeam. (vos) = lo hacés vos · (Claude) = lo hago y
 
 - [ ] **Reel con el gancho legal argentino** - (Claude), cuando lo confirme el contador
   - Hablar del reclamo laboral por horas extra (no de ARCA): cada entrada y salida queda registrada, con el historial de cambios.
-- [ ] **Grabar el producto real con Recordly** - (vos + Claude), postergado
 - [ ] **Pasar las mejores stories a las destacadas** - (vos), después del 28/10
   - Encuestas y quizzes a FAQ, la visita al local a CLIENTES.
 
