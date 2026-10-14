@@ -138,12 +138,12 @@ const EscenaCafe: React.FC = () => {
       </svg>
       <div style={{ position: "absolute", left: 350, top: 274, width: 380, textAlign: "center", fontFamily: F.hand, fontSize: 52, lineHeight: 1.2, whiteSpace: "nowrap", color: C.violet, opacity: p(3.0, 3.5) }}>Café de Juan</div>
 
-      <div style={{ position: "absolute", left: 280, top: 404 }}>
-        <Juan ancho={520} dibujo={tramo(frame, 0, 20)} brazo={brazo} ola={ola} parpadeo={parpadeos(frame, [s(3.4), s(6.6)])} />
+      <div style={{ position: "absolute", left: 276, top: 404 }}>
+        <Juan ancho={528} dibujo={tramo(frame, 0, 20)} brazo={brazo} ola={ola} parpadeo={parpadeos(frame, [s(3.4), s(6.6)])} />
       </div>
 
       <svg width={1080} height={1920} viewBox="0 0 1080 1920" style={{ position: "absolute", inset: 0 }}>
-        <Trazo d={rr(70, 1098, 940, 230, 10)} p={p(1.7, 2.6)} fill={BARRA} />
+        <Trazo d={rr(70, 1098, 940, 830, 10)} p={p(1.7, 2.6)} fill={BARRA} />
         <Trazo d={rr(50, 1070, 980, 30, 10)} p={p(1.7, 2.4)} fill={MADERA} />
         <Trazo d="M330 1130 L330 1300 M590 1130 L590 1300 M850 1130 L850 1300" p={p(2.4, 3.0)} w={4} />
         <Trazo d={rr(120, 884, 220, 186, 22)} p={p(2.0, 2.9)} fill={C.white} />
@@ -222,8 +222,8 @@ const EscenaPlanilla: React.FC = () => {
           }),
         )}
       </div>
-      <div style={{ position: "absolute", left: 40, top: 800 }}>
-        <Juan ancho={330} expresion="preocupado" parpadeo={parpadeos(frame, [s(9.8)])} />
+      <div style={{ position: "absolute", left: 60, top: 750 }}>
+        <Juan ancho={220} expresion="preocupado" parpadeo={parpadeos(frame, [s(9.8)])} />
       </div>
     </AbsoluteFill>
   );
@@ -245,8 +245,8 @@ const EscenaPreguntas: React.FC = () => {
   const frame = useCurrentFrame();
   return (
     <AbsoluteFill>
-      <div style={{ position: "absolute", left: 310, top: 470 }}>
-        <Juan ancho={460} expresion="preocupado" parpadeo={parpadeos(frame, [s(14.7)])} />
+      <div style={{ position: "absolute", left: 375, top: 500 }}>
+        <Juan ancho={330} expresion="preocupado" parpadeo={parpadeos(frame, [s(14.7)])} />
       </div>
       <BurbujaPregunta x={200} y={500} desde={s(T.p1)}>
         <Icono24 tam={116}>
@@ -280,8 +280,8 @@ const EscenaPreguntas: React.FC = () => {
 const EscenaMeses: React.FC = () => {
   const frame = useCurrentFrame();
   return (
-    <div style={{ position: "absolute", left: 40, top: 930 }}>
-      <Juan ancho={260} expresion="preocupado" parpadeo={parpadeos(frame, [s(17.0), s(18.7)])} />
+    <div style={{ position: "absolute", left: 50, top: 880 }}>
+      <Juan ancho={190} expresion="preocupado" parpadeo={parpadeos(frame, [s(17.0), s(18.7)])} />
     </div>
   );
 };
@@ -293,17 +293,17 @@ const EscenaFinal: React.FC = () => {
   return (
     <AbsoluteFill>
       <svg width={1080} height={1920} viewBox="0 0 1080 1920" style={{ position: "absolute", inset: 0, opacity: queda }}>
-        <Trazo d={rr(90, 280, 300, 300, 24)} p={p(35.5, 36.3)} fill={C.white} />
-        <circle cx={240} cy={440} r={62} fill="#F6C88B" opacity={p(36.0, 36.6) * 0.85} />
-        <Trazo d="M240 280 L240 580 M90 430 L390 430" p={p(35.9, 36.5)} w={5} />
-        <Trazo d="M800 150 L800 300" p={p(35.6, 36.0)} w={5} />
-        <Trazo d="M750 362 L850 362 L830 300 L770 300 Z" p={p(35.7, 36.2)} fill={C.violetSoft} />
+        <Trazo d={rr(690, 300, 300, 300, 24)} p={p(35.5, 36.3)} fill={C.white} />
+        <circle cx={840} cy={452} r={60} fill="#F6C88B" opacity={p(36.0, 36.6) * 0.85} />
+        <Trazo d="M840 300 L840 600 M690 452 L990 452" p={p(35.9, 36.5)} w={5} />
+        <Trazo d="M560 150 L560 300" p={p(35.6, 36.0)} w={5} />
+        <Trazo d="M510 362 L610 362 L590 300 L530 300 Z" p={p(35.7, 36.2)} fill={C.violetSoft} />
       </svg>
-      <div style={{ position: "absolute", left: 96, top: 540, opacity: queda }}>
-        <Juan ancho={440} expresion="tranquilo" dibujo={p(35.6, 36.9)} parpadeo={parpadeos(frame, [s(37.3)])} />
+      <div style={{ position: "absolute", left: 60, top: 500, opacity: queda }}>
+        <Juan ancho={400} expresion="tranquilo" dibujo={p(35.6, 36.9)} parpadeo={parpadeos(frame, [s(37.3)])} />
       </div>
       <svg width={1080} height={1920} viewBox="0 0 1080 1920" style={{ position: "absolute", inset: 0 }}>
-        <Trazo d={rr(80, 1226, 920, 150, 10)} p={p(35.5, 36.2)} fill={BARRA} />
+        <Trazo d={rr(80, 1226, 920, 700, 10)} p={p(35.5, 36.2)} fill={BARRA} />
         <Trazo d={rr(60, 1198, 960, 30, 10)} p={p(35.5, 36.1)} fill={MADERA} />
       </svg>
     </AbsoluteFill>
@@ -854,21 +854,27 @@ const GarabatosUI: React.FC = () => {
   );
 };
 
-// Efectos de sonido: pocos y suaves, solo donde pasa algo concreto.
-// [segundo de la voz, archivo en public/sfx, volumen, duración opcional en s]
-const SFX: [number, string, number, number?][] = [
-  [T.cafe, "ambiente-cafe", 0.1, 5.9],
-  [3.65, "taza", 0.14],
-  [7.55, "papel", 0.2],
-  [16.5, "pagina", 0.13], [17.2, "pagina", 0.13], [17.9, "pagina", 0.13], [18.5, "pagina", 0.13],
-  ...TOQUES_PIN.map((t): [number, string, number] => [t, "tap-suave", 0.3]),
-  [TOQUE_OK, "tap-suave", 0.34],
-  [SALUDO + 0.05, "campana-suave", 0.22],
-  [T.clic, "clic-suave", 0.3],
-  [34.0, "campana-suave", 0.2],
-  [T.tiempo, "ambiente-cafe", 0.07, 6.6],
-  [35.9, "taza", 0.16],
-  [43.1, "acorde-final", 0.2],
+// Efectos de sonido de uisfx (CC0, paquetes "soft" y "organic"), en public/sfx/uisfx.
+// [segundo de la voz, archivo, volumen]
+const SFX: [number, string, number][] = [
+  [0.5, "soft-wake", 0.32], // Juan aparece y saluda
+  [3.65, "organic-drop", 0.34], // taza en la barra
+  [T.gente + 0.08, "soft-receive", 0.3], // "¡Hola, Juan!"
+  [5.78, "soft-receive", 0.26], // "¡Lo de siempre!"
+  [7.55, "soft-drop", 0.34], // llega la planilla
+  [T.p1, "soft-select", 0.28], [T.p2, "soft-select", 0.28], [T.p3, "soft-select", 0.28], // preguntas
+  [16.5, "soft-swipe", 0.26], [17.2, "soft-swipe", 0.26], [17.9, "soft-swipe", 0.26], [18.5, "soft-swipe", 0.26], // meses
+  [T.miteam + 0.05, "soft-open", 0.3], [20.05, "soft-wake", 0.42], // aparece la M y abre los ojos
+  ...TOQUES_PIN.map((t): [number, string, number] => [t, "soft-press", 0.4]), // PIN
+  [TOQUE_OK, "soft-check", 0.42],
+  [SALUDO, "soft-success", 0.44], // "¡Hola, Lucía!"
+  [T.internet, "soft-disconnect", 0.34], [27.62, "soft-receive", 0.3], [28.6, "soft-connect", 0.34], // sin internet y sincroniza
+  [T.clic, "soft-press", 0.46], // "un clic"
+  ...[0, 1, 2, 3].map((i): [number, string, number] => [31.6 + i * 0.35, "soft-typing", 0.26]), // se llena el Excel
+  [34.0, "soft-complete", 0.44], // "Listo para el contador"
+  [35.9, "organic-drop", 0.32], // la taza en la mesa
+  [39.55, "soft-select", 0.28], // miteam.online
+  [42.97, "soft-wake", 0.42], [43.2, "soft-achievement", 0.32], // logo final
 ];
 
 const Sonidos: React.FC = () => (
@@ -877,17 +883,11 @@ const Sonidos: React.FC = () => (
     <Sequence from={s(CORTE)} name="voz después de la pausa">
       <Audio src={staticFile("voz-juan.mp3")} trimBefore={crudo(CORTE)} />
     </Sequence>
-    {SFX.map(([seg, archivo, volumen, dur], i) => {
-      const largo = crudo(dur ?? 2.5);
-      return (
-        <Sequence key={`sfx-${i}`} from={s(seg)} durationInFrames={largo} name={`sfx ${archivo}`}>
-          <Audio
-            src={staticFile(`sfx/${archivo}.wav`)}
-            volume={(f) => (dur ? interpolate(f, [0, 20, largo - 24, largo], [0, volumen, volumen, 0], { extrapolateLeft: "clamp", extrapolateRight: "clamp" }) : volumen)}
-          />
-        </Sequence>
-      );
-    })}
+    {SFX.map(([seg, archivo, volumen], i) => (
+      <Sequence key={`sfx-${i}`} from={s(seg)} durationInFrames={crudo(2)} name={`sfx ${archivo}`}>
+        <Audio src={staticFile(`sfx/uisfx/${archivo}.mp3`)} volume={volumen} />
+      </Sequence>
+    ))}
   </>
 );
 

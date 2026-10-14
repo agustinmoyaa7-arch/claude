@@ -20,7 +20,8 @@ Garabatos animados de la hoja de recursos (rayitas, subrayados, flechas, destell
 
 45 segundos, ritmo tranquilo, voz en `public/voz-juan.mp3`. Juan, dueño de un café, saluda a cámara, cuenta el problema de la planilla y prueba MiTeam: el calendario se transforma en la M, la M en la tablet, la tablet en el celular, el celular en el Excel y el Excel en su taza de café. Cierra con la M de la mascota.
 
-- Juan (el dibujo y sus caras): `src/JuanPersonaje.tsx`.
+- Juan (personaje de cuerpo entero en colores planos, sus caras y el saludo): `src/JuanPersonaje.tsx`.
+- Sonidos: de [uisfx](https://github.com/romainsimon/uisfx), paquetes "soft" y "organic", con licencia CC0 (`public/sfx/uisfx/`).
 - Escenas, tiempos de cada frase (`T`), subtítulos y sonidos: `src/Juan.tsx`.
 
 ```powershell
