@@ -82,8 +82,20 @@ export const Juan: React.FC<{
           <g opacity={saluda} transform={`translate(214 250) rotate(${-150 * brazo + ola})`}>
             <path d="M-16 -2 C4 -10 22 0 26 16 C32 62 32 122 26 168 L0 170 C2 120 0 70 -12 24 Z" fill={MANGA} />
             <path d="M0 160 L26 158 L26 176 L0 178 Z" fill={RIB} />
-            <circle cx={13} cy={192} r={17} fill={PIEL} />
-            <path d="M2 182 L-6 168 M10 178 L8 162 M18 178 L20 162 M25 182 L32 170" stroke={PIEL} strokeWidth={8} strokeLinecap="round" />
+            <g transform="translate(13 176)">
+              {/* Mano abierta: dedos hacia afuera del brazo, en abanico; el pulgar del lado de la cara */}
+              {[
+                [-11, 22, 9],
+                [-4, 28, 3],
+                [4, 30, -2],
+                [11, 26, -7],
+              ].map(([x, largo, giro]) => (
+                <rect key={x} x={x - 3.6} y={26} width={7.2} height={largo} rx={3.6} fill={PIEL} transform={`rotate(${giro} ${x} 28)`} />
+              ))}
+              <rect x={10.2} y={8} width={7.6} height={21} rx={3.8} fill={PIEL} transform="rotate(-60 14 9)" />
+              <path d="M-15 0 C-17 18 -12 33 0 35 C12 33 17 18 15 0 Z" fill={PIEL} />
+              <path d="M-7 14 C-3 20 3 21 8 18" fill="none" stroke={PIEL_SOMBRA} strokeWidth={2.5} strokeLinecap="round" />
+            </g>
           </g>
         )}
       </g>
