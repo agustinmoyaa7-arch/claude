@@ -222,6 +222,27 @@ def ambiente_cafe(dur=8.0):
     return np.stack([izq, der], axis=1)
 
 
+def pluck(f, dur=0.5, brillo=1.0):
+    """Nota de marimba suave: madera en vez de clic electrónico."""
+    t = t_(dur)
+    out = np.zeros(len(t))
+    for m, a, tau in [(1, 1.0, 0.16), (4.0, 0.22 * brillo, 0.05), (10.0, 0.04 * brillo, 0.02)]:
+        out += a * np.sin(2 * np.pi * f * m * t) * np.exp(-t / tau)
+    golpe = pasabajos(rng.standard_normal(len(t)), 8) * np.exp(-t / 0.002) * 0.15
+    return (out + golpe) * (1 - np.exp(-t / 0.0015))
+
+
+def campana_suave(notas, separacion=0.12, tau=0.7, dur_extra=1.4):
+    t = t_(separacion * len(notas) + dur_extra)
+    out = np.zeros(len(t))
+    for i, f in enumerate(notas):
+        d = int(i * separacion * SR)
+        tt = t[: len(t) - d]
+        env = (1 - np.exp(-tt / 0.006)) * np.exp(-tt / tau)
+        out[d:] += (np.sin(2 * np.pi * f * tt) + 0.08 * np.sin(4 * np.pi * f * tt)) * env * (0.9 ** i)
+    return reverb(out, 0.9, 0.3)
+
+
 def a_estereo(par):
     izq, der = par
     return np.stack([izq, der], axis=1)
@@ -243,4 +264,12 @@ guardar("taza", taza(), pico=0.55)
 guardar("papel", papel(), pico=0.6)
 guardar("pagina", pagina(), pico=0.6)
 guardar("ambiente-cafe", ambiente_cafe(), pico=0.5)
+guardar("tap-suave", reverb(pluck(784), 0.35, 0.15), pico=0.6)
+dos = np.zeros(int(0.6 * SR))
+p1, p2 = pluck(988, 0.5), pluck(1319, 0.5) * 0.7
+dos[: len(p1)] += p1
+dos[int(0.05 * SR) : int(0.05 * SR) + len(p2)] += p2[: len(dos) - int(0.05 * SR)]
+guardar("clic-suave", reverb(dos, 0.35, 0.15), pico=0.6)
+guardar("campana-suave", campana_suave([659.25, 987.77]), pico=0.55)
+guardar("acorde-final", campana_suave([523.25, 659.25, 783.99, 1046.5], 0.13, 0.9, 1.8), pico=0.55)
 print("Listo:", sorted(p.name for p in SALIDA.glob("*.wav")))

@@ -19,7 +19,12 @@ import { Juan } from "./JuanPersonaje";
 import { LogoFinal } from "./Presentacion";
 
 const FPS = 30;
-const s = (seg: number) => Math.round(seg * FPS);
+// Pausa que se abre en la voz después de "…en la barra", para que la tablet respire.
+// Todos los tiempos de este archivo están en segundos de la voz; s() los pasa a cuadros del video.
+const CORTE = 24.6;
+const PAUSA = 1.8;
+const crudo = (seg: number) => Math.round(seg * FPS);
+const s = (seg: number) => crudo(seg >= CORTE ? seg + PAUSA : seg);
 const suave = Easing.inOut(Easing.cubic);
 
 // Segundos en los que la voz dice cada frase (medidos en voz-juan.mp3).
@@ -344,9 +349,9 @@ const centroTecla = (idx: number): [number, number] => {
   return [TAB.cx - TAB.w / 2 + TAB.pad + col * (COL_W + TAB.gap) + COL_W / 2, TAB.cy - TAB.h / 2 + TAB.tecladoTop + fila * (TAB.teclaH + TAB.gap) + TAB.teclaH / 2];
 };
 const PIN = ["4", "8", "1", "5"];
-const TOQUES_PIN = [21.9, 22.3, 22.7, 23.1];
-const TOQUE_OK = 23.5;
-const SALUDO = 23.6;
+const TOQUES_PIN = [22.1, 22.65, 23.2, 23.75];
+const TOQUE_OK = 24.3;
+const SALUDO = 24.42;
 const BOTON_CIERRE: [number, number] = [540, 1229];
 
 const ContCalendario: React.FC = () => {
@@ -710,13 +715,13 @@ const LaForma: React.FC = () => {
 
 // Dedo que toca la pantalla
 const CAMINO: [number, number, number][] = [
-  [21.45, 760, 1500],
-  [21.8, ...centroTecla(TECLAS.indexOf(PIN[0]))],
-  [22.2, ...centroTecla(TECLAS.indexOf(PIN[1]))],
-  [22.6, ...centroTecla(TECLAS.indexOf(PIN[2]))],
-  [23.0, ...centroTecla(TECLAS.indexOf(PIN[3]))],
-  [23.4, ...centroTecla(TECLAS.indexOf("✓"))],
-  [23.95, 900, 1520],
+  [21.55, 760, 1500],
+  [21.98, ...centroTecla(TECLAS.indexOf(PIN[0]))],
+  [22.53, ...centroTecla(TECLAS.indexOf(PIN[1]))],
+  [23.08, ...centroTecla(TECLAS.indexOf(PIN[2]))],
+  [23.63, ...centroTecla(TECLAS.indexOf(PIN[3]))],
+  [24.18, ...centroTecla(TECLAS.indexOf("✓"))],
+  [24.58, 900, 1520],
   [30.1, 820, 1520],
   [30.6, ...BOTON_CIERRE],
   [31.25, 780, 1520],
@@ -727,7 +732,7 @@ const Dedo: React.FC = () => {
   const frame = useCurrentFrame();
   const x = pista(frame, CAMINO.map(([t, px]) => [s(t), px]));
   const y = pista(frame, CAMINO.map(([t, , py]) => [s(t), py]));
-  const op = Math.max(ventana(frame, s(21.45), s(23.85), 5), ventana(frame, s(30.1), s(31.1), 5));
+  const op = Math.max(ventana(frame, s(21.55), s(24.46), 5), ventana(frame, s(30.1), s(31.1), 5));
   const presion = Math.max(0, ...TOQUES.map((t) => 1 - Math.min(1, Math.abs(frame - s(t)) / 3)));
   const lugar = (t: number) => {
     const i = CAMINO.findIndex(([tc]) => tc >= t - 0.11);
@@ -849,36 +854,31 @@ const GarabatosUI: React.FC = () => {
   );
 };
 
-// Efectos de sonido suaves: [segundo, archivo, volumen, duración opcional en s]
+// Efectos de sonido: pocos y suaves, solo donde pasa algo concreto.
+// [segundo de la voz, archivo en public/sfx, volumen, duración opcional en s]
 const SFX: [number, string, number, number?][] = [
-  [0.2, "marcador", 0.14],
-  [0.5, "pop", 0.16],
-  [T.cafe, "ambiente-cafe", 0.12, 5.9],
-  [1.8, "marcador", 0.1], [2.6, "marcador", 0.1], [3.4, "marcador", 0.1],
-  [3.65, "taza", 0.2],
-  [5.18, "pop", 0.18], [5.78, "pop", 0.18], [6.32, "destello", 0.1],
-  [7.3, "whoosh-largo", 0.14], [7.55, "papel", 0.3],
-  [8.6, "marcador", 0.16], [9.4, "marcador", 0.16], [10.2, "marcador", 0.16],
-  [T.p1, "pop-grave", 0.2], [T.p2, "pop-grave", 0.2], [T.p3, "pop-grave", 0.2],
-  [15.7, "whoosh-corto", 0.14], [15.85, "pop", 0.14],
-  [16.5, "pagina", 0.24], [17.2, "pagina", 0.24], [17.9, "pagina", 0.24], [18.5, "pagina", 0.24],
-  [19.05, "whoosh", 0.2], [19.45, "marcador", 0.1], [20.05, "pop", 0.2], [20.15, "destello", 0.12],
-  [20.85, "whoosh-corto", 0.16],
-  [21.9, "tap", 0.24], [22.3, "tap", 0.24], [22.7, "tap", 0.24], [23.1, "tap", 0.24], [23.5, "tap", 0.3], [23.62, "campana", 0.22],
-  [24.78, "whoosh-corto", 0.16],
-  [27.03, "golpe", 0.16], [27.62, "pop", 0.14], [28.6, "destello", 0.1],
-  [29.7, "whoosh-corto", 0.1], [30.75, "clic", 0.34], [30.88, "whoosh", 0.2],
-  [31.6, "tap", 0.1], [31.95, "tap", 0.1], [32.3, "tap", 0.1], [32.65, "tap", 0.1], [33.2, "pop", 0.14], [34.0, "campana", 0.24],
-  [35.3, "whoosh-largo", 0.18], [T.tiempo, "ambiente-cafe", 0.08, 6.6], [35.9, "taza", 0.22], [35.6, "marcador", 0.1],
-  [38.0, "whoosh-corto", 0.1], [39.1, "destello", 0.12], [39.55, "pop", 0.18],
-  [42.15, "whoosh-largo", 0.2], [42.3, "marcador", 0.14], [42.98, "pop", 0.22], [43.15, "campana-final", 0.22],
+  [T.cafe, "ambiente-cafe", 0.1, 5.9],
+  [3.65, "taza", 0.14],
+  [7.55, "papel", 0.2],
+  [16.5, "pagina", 0.13], [17.2, "pagina", 0.13], [17.9, "pagina", 0.13], [18.5, "pagina", 0.13],
+  ...TOQUES_PIN.map((t): [number, string, number] => [t, "tap-suave", 0.3]),
+  [TOQUE_OK, "tap-suave", 0.34],
+  [SALUDO + 0.05, "campana-suave", 0.22],
+  [T.clic, "clic-suave", 0.3],
+  [34.0, "campana-suave", 0.2],
+  [T.tiempo, "ambiente-cafe", 0.07, 6.6],
+  [35.9, "taza", 0.16],
+  [43.1, "acorde-final", 0.2],
 ];
 
 const Sonidos: React.FC = () => (
   <>
-    <Audio src={staticFile("voz-juan.mp3")} />
+    <Audio src={staticFile("voz-juan.mp3")} trimAfter={crudo(CORTE)} />
+    <Sequence from={s(CORTE)} name="voz después de la pausa">
+      <Audio src={staticFile("voz-juan.mp3")} trimBefore={crudo(CORTE)} />
+    </Sequence>
     {SFX.map(([seg, archivo, volumen, dur], i) => {
-      const largo = s(dur ?? 2.5);
+      const largo = crudo(dur ?? 2.5);
       return (
         <Sequence key={`sfx-${i}`} from={s(seg)} durationInFrames={largo} name={`sfx ${archivo}`}>
           <Audio
