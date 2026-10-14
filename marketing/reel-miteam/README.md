@@ -41,6 +41,18 @@ npm run render:temporada    # genera out/miteam-reel-temporada.mp4
 npm run portada:temporada   # genera out/portada-temporada.png
 ```
 
+## Reel "Así funciona MiTeam" (`Recorrido`)
+
+53 segundos, voz en `public/voz-recorrido.mp3`. Recorrido por la app en 5 pasos: la tablet del local (PIN, entrada y salida, sin internet), el resumen en vivo en el celular, los horarios con colores, rotación y aviso de descanso, plan vs. real con la aprobación de horas extra, y el cierre de mes con el Excel. La interfaz copia las pantallas reales de la app, con datos inventados.
+
+- Escenas, tiempos de cada frase (`T`), textos de arriba y sonidos: `src/Recorrido.tsx`.
+- Portada "Así funciona MiTeam": `PortadaRecorrido`, en el mismo archivo.
+
+```powershell
+npm run render:recorrido    # genera out/miteam-reel-recorrido.mp4
+npm run portada:recorrido   # genera out/portada-recorrido.png
+```
+
 ## Usarlo en tu PC
 
 Desde esta carpeta, en PowerShell:
