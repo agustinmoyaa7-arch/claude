@@ -9,7 +9,9 @@
     "portada": "remotion still Lanzamiento out/portada.png --frame=60",
     "render:presentacion": "remotion render Presentacion out/miteam-reel-presentacion.mp4",
     "portada:presentacion": "remotion still Presentacion out/portada-presentacion.png --frame=110",
-    "render:juan": "remotion render Juan out/miteam-reel-juan.mp4"
+    "render:juan": "remotion render Juan out/miteam-reel-juan.mp4",
+    "render:temporada": "remotion render Temporada out/miteam-reel-temporada.mp4",
+    "portada:temporada": "remotion still PortadaTemporada out/portada-temporada.png"
   },
   "dependencies": {
     "@fontsource-variable/fraunces": "^5.2.5",

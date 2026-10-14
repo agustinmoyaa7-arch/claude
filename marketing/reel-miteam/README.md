@@ -28,6 +28,19 @@ Garabatos animados de la hoja de recursos (rayitas, subrayados, flechas, destell
 npm run render:juan   # genera out/miteam-reel-juan.mp4
 ```
 
+## Reel "Entran 10 chicos nuevos para la temporada" (`Temporada`)
+
+21 segundos, voz en `public/voz-temporada.mp3`. Muestra la carga de empleados desde Excel: la planilla con los 10 nombres, el "no" a cargarlos uno por uno, bajar la planilla base, llenarla, subirla (te marca la fila con error y se corrige), el PDF con los PIN para repartir y Sofi fichando al otro día en la tablet. Cierra con la M de la mascota y "Probalo 14 días gratis".
+
+- Todos los datos son inventados (Sofi, Tomi, Martín…): no usar empleados reales de los clientes.
+- Escenas, tiempos de cada frase (`T`), textos de arriba y sonidos: `src/Temporada.tsx`.
+- Portada "10 nuevos → fichando mañana": `PortadaTemporada`, en el mismo archivo.
+
+```powershell
+npm run render:temporada    # genera out/miteam-reel-temporada.mp4
+npm run portada:temporada   # genera out/portada-temporada.png
+```
+
 ## Usarlo en tu PC
 
 Desde esta carpeta, en PowerShell:

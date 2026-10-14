@@ -77,7 +77,7 @@ export const Mascota: React.FC<{
       strokeLinecap="round"
       strokeLinejoin="round"
     >
-      <path d={OREJAS} strokeWidth={6.6} pathLength={1} strokeDasharray={1} strokeDashoffset={1 - dibujo} />
+      <path d={OREJAS} strokeWidth={6.6} pathLength={1} strokeDasharray={1} strokeDashoffset={1 - dibujo} opacity={dibujo > 0.002 ? 1 : 0} />
       <g style={{ transformOrigin: "50px 55px", transform: `scaleY(${(1 - parpadeo * 0.7) * ojos})`, opacity: ojos }}>
         <path d={OJOS} strokeWidth={3.6} />
       </g>
