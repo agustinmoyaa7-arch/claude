@@ -16,6 +16,17 @@ Efectos de sonido: barridos de viento en cada cambio de escena, pops, taps del P
 
 Garabatos animados de la hoja de recursos (rayitas, subrayados, flechas, destellos, garabatos, onda de clic): `src/garabatos.tsx`. Dónde va cada uno: `CAPAS` en `src/Presentacion.tsx`.
 
+## Reel historia: "Juan" (`Juan`)
+
+45 segundos, ritmo tranquilo, voz en `public/voz-juan.mp3`. Juan, dueño de un café, saluda a cámara, cuenta el problema de la planilla y prueba MiTeam: el calendario se transforma en la M, la M en la tablet, la tablet en el celular, el celular en el Excel y el Excel en su taza de café. Cierra con la M de la mascota.
+
+- Juan (el dibujo y sus caras): `src/JuanPersonaje.tsx`.
+- Escenas, tiempos de cada frase (`T`), subtítulos y sonidos: `src/Juan.tsx`.
+
+```powershell
+npm run render:juan   # genera out/miteam-reel-juan.mp4
+```
+
 ## Usarlo en tu PC
 
 Desde esta carpeta, en PowerShell:

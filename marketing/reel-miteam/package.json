@@ -8,7 +8,8 @@
     "render": "remotion render Lanzamiento out/miteam-reel-lanzamiento.mp4",
     "portada": "remotion still Lanzamiento out/portada.png --frame=60",
     "render:presentacion": "remotion render Presentacion out/miteam-reel-presentacion.mp4",
-    "portada:presentacion": "remotion still Presentacion out/portada-presentacion.png --frame=110"
+    "portada:presentacion": "remotion still Presentacion out/portada-presentacion.png --frame=110",
+    "render:juan": "remotion render Juan out/miteam-reel-juan.mp4"
   },
   "dependencies": {
     "@fontsource-variable/fraunces": "^5.2.5",

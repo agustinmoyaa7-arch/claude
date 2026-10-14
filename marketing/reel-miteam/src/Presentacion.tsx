@@ -194,7 +194,7 @@ const ComentaApp: React.FC = () => {
   );
 };
 
-const LogoFinal: React.FC = () => {
+export const LogoFinal: React.FC = () => {
   const frame = useCurrentFrame();
   const dibujo = useTrazo(0, 24);
   const ojos = useEntrada(20, 9);

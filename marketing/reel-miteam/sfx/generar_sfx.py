@@ -167,6 +167,61 @@ def golpe_suave():
     return reverb(tono + ruido, 0.3, 0.1)
 
 
+def taza(dur=0.6):
+    """Tintineo de taza de cerámica."""
+    t = t_(dur)
+    out = np.zeros(len(t))
+    for f, a, tau in [(2650, 1.0, 0.18), (3980, 0.6, 0.12), (5310, 0.35, 0.08), (7100, 0.2, 0.05)]:
+        out += a * np.sin(2 * np.pi * f * t) * np.exp(-t / tau)
+    golpe = np.diff(rng.standard_normal(len(t) + 1)) * np.exp(-t / 0.001) * 0.3
+    return reverb((out + golpe) * (1 - np.exp(-t / 0.001)), 0.4, 0.2)
+
+
+def papel(dur=0.55):
+    """Hoja de papel que se mueve: muchos crujidos cortos."""
+    t = t_(dur)
+    env = np.zeros(len(t))
+    for _ in range(26):
+        c = rng.uniform(0, dur * 0.85)
+        ancho = rng.uniform(0.004, 0.02)
+        env += rng.uniform(0.3, 1.0) * np.exp(-(((t - c) / ancho) ** 2))
+    env *= np.sin(np.clip(t / dur, 0, 1) * np.pi) ** 0.5
+    roce = pasabanda(pasabanda(rng.standard_normal(len(t)), 2400, 1.0), 2400, 1.0)
+    return reverb(roce * env, 0.3, 0.12)
+
+
+def pagina(dur=0.34):
+    """Página de calendario que pasa: soplido corto que baja de tono."""
+    t = t_(dur)
+    x = t / dur
+    env = np.sin(np.clip(x, 0, 1) * np.pi) ** 1.5
+    fc = 3200 * (1100 / 3200) ** x
+    soplo = pasabanda(pasabanda(rng.standard_normal(len(t)), fc, 1.1), fc, 1.1) * env
+    golpecito = np.sin(2 * np.pi * 140 * t) * np.exp(-np.clip(t - dur * 0.7, 0, None) / 0.03) * (t > dur * 0.7) * 0.4
+    return reverb(soplo + golpecito, 0.3, 0.12)
+
+
+def ambiente_cafe(dur=8.0):
+    """Murmullo de café bajito: voces lejanas sin palabras y alguna taza."""
+    t = t_(dur)
+    ruido = rng.standard_normal(len(t))
+    voces = pasabanda(pasabanda(ruido, 520, 1.6), 520, 1.6)
+    modulacion = np.zeros(len(t))
+    for _ in range(5):
+        f = rng.uniform(0.25, 1.4)
+        modulacion += np.sin(2 * np.pi * f * t + rng.uniform(0, 6))
+    voces *= 0.6 + 0.25 * modulacion / 5
+    fondo = pasabajos(pasabajos(rng.standard_normal(len(t)), 60), 60) * 0.8
+    out = voces + fondo
+    for c in rng.uniform(0.6, dur - 0.8, 4):
+        tin = taza(0.5) * rng.uniform(0.04, 0.08)
+        i = int(c * SR)
+        out[i : i + len(tin)] += tin[: len(out) - i]
+    izq = reverb(out, 0.8, 0.35)
+    der = reverb(np.roll(out, 900), 0.8, 0.35)
+    return np.stack([izq, der], axis=1)
+
+
 def a_estereo(par):
     izq, der = par
     return np.stack([izq, der], axis=1)
@@ -184,4 +239,8 @@ guardar("campana-final", campana([783.99, 1174.66, 1567.98], 0.11, 0.6), pico=0.
 guardar("marcador", marcador())
 guardar("destello", destello())
 guardar("golpe", golpe_suave(), pico=0.6)
+guardar("taza", taza(), pico=0.55)
+guardar("papel", papel(), pico=0.6)
+guardar("pagina", pagina(), pico=0.6)
+guardar("ambiente-cafe", ambiente_cafe(), pico=0.5)
 print("Listo:", sorted(p.name for p in SALIDA.glob("*.wav")))
