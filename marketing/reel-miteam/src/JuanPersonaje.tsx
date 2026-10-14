@@ -7,8 +7,9 @@ export type Expresion = "feliz" | "preocupado" | "tranquilo";
 
 const PIEL = "#F2C9A5";
 const PIEL_SOMBRA = "#E0AC86";
-const PELO = "#8A5536";
-const PELO_OSCURO = "#6B3F25";
+const PELO = "#3A2C25";
+const PELO_OSCURO = "#2B201B";
+const PELO_BRILLO = "#54423A";
 const OJOS = "#2B2240";
 const CAMPERA = C.violet;
 const CAMPERA_SOMBRA = "#3A1BC9";
@@ -144,11 +145,12 @@ export const Juan: React.FC<{
 
       <g {...entra(pelo)}>
         <path
-          d="M104 124 C98 88 116 62 146 56 C140 40 148 24 162 14 C164 30 170 38 180 40 C186 26 200 18 214 20 C206 32 208 44 216 54 C226 70 224 100 216 124 C210 104 198 94 182 90 C162 86 134 90 118 104 C112 110 106 118 104 124 Z"
+          d="M104 124 C98 86 114 58 140 51 C146 45 154 47 160 44 C167 42 172 47 179 46 C206 53 222 84 216 124 C212 108 205 97 194 91 C183 85 171 83 160 83 C150 83 141 86 134 91 C127 88 120 91 116 97 C110 105 106 114 104 124 Z"
           fill={PELO}
         />
-        <path d="M146 56 C150 70 162 80 182 82 C170 72 166 62 168 50 C160 58 152 60 146 56 Z" fill={PELO_OSCURO} opacity={0.7} />
-        <path d="M104 124 C104 134 106 142 110 148 L114 120 Z M216 124 C216 134 214 142 210 148 L206 120 Z" fill={PELO} />
+        <path d="M128 66 C140 57 156 54 172 56 C162 60 150 64 138 72 Z" fill={PELO_BRILLO} opacity={0.8} />
+        <path d="M140 62 l5 -6 M156 57 l5 -6 M172 58 l5 -6 M186 64 l4 -5" stroke={PELO_OSCURO} strokeWidth={3} strokeLinecap="round" opacity={0.6} />
+        <path d="M104 120 L113 112 L114 146 C109 142 106 134 104 120 Z M216 120 L207 112 L206 146 C211 142 214 134 216 120 Z" fill={PELO} />
       </g>
     </svg>
   );
