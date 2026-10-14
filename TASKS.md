@@ -28,6 +28,7 @@ Pendientes de marketing de MiTeam. (vos) = lo hacés vos · (Claude) = lo hago y
 
 ## Waiting On
 
+- [ ] **Audio de ElevenLabs del reel 1 · Wifi** - (vos → Claude), sale el jue 15/10. Guion pasado el 14/10 · since 14/10
 - [ ] **Foto tuya con la compu** - (vos → Claude), para la story del sáb 17/10 ("Así armamos MiTeam desde Carlos Paz") · since 14/10
 - [ ] **1 o 2 preguntas de la caja** - (vos → Claude), para la story "Nos preguntaron" del lun 19/10 · since 14/10
 - [ ] **Link de la demo** - (vos), para la story del mié 21/10. Si no hay, va miteam.online · since 14/10
